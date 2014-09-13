@@ -1,0 +1,30 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main()
+{
+	FILE *archivo1;
+	FILE *archivo2;
+	char caracter;
+
+	archivo1 = fopen("prueba.txt","r");
+	archivo2 = fopen("fichero_salida.txt","w");
+
+	if (archivo1 == NULL)
+		printf("\nError de apertura del archivo. \n\n");
+
+    else{
+	    printf("\nEmpezando copia... \n\n");
+	    while (feof(archivo1) == 0){
+            caracter = fgetc(archivo1);
+            if(caracter == EOF)
+                break;
+            else
+                fputc(caracter,archivo2);
+	    }
+	    printf("\nCopia realizada con exito... \n\n");
+    }
+        fclose(archivo1);
+        fclose(archivo2);
+	return 0;
+}
