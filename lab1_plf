@@ -28,3 +28,102 @@ int main()
         fclose(archivo2);
 	return 0;
 }
+
+-------------------------------------------------------------------------------------------
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#define OEA "Organización de los Estados Americanos"
+#define OCDE "Organización para la Cooperación y el Desarrollo Económicos"
+#define UNASUR "Unión de Naciones Sudamericanas"
+#define ONU "Organización de las Naciones Unidas"
+#define CEPAL "Comisión Económica para América Latina y el Caribe"
+#define FAO "Organización de las Naciones Unidas para la Alimentación y la Agricultura"
+#define OIM "Organización Internacional para las Migraciones"
+#define OIT "Organización Internacional del Trabajo"
+#define OPS "Organización Panamericana de la Salud"
+#define OMS "Organización Mundial de la Salud"
+#define UNESCO "Organización de las Naciones Unidas para la Educación, la Ciencia y la Cultura"
+#define UNICEF "Fondo de las Naciones Unidas para la infancia"
+
+char * verifica_coind(char *p1){
+
+
+    return p1;
+}
+
+void lee_archivo(){
+    FILE *archivo1;
+	FILE *archivo2;
+	char caracter;
+
+	archivo1 = fopen("prueba.txt","r");
+	archivo2 = fopen("fichero_salida.txt","w");
+
+	if (archivo1 == NULL)
+		printf("\nError de apertura del archivo. \n\n");
+
+    else{
+	    printf("\nEmpezando copia... \n\n");
+	    while (feof(archivo1) == 0){
+            caracter = fgetc(archivo1);
+
+            if(caracter == EOF)
+                break;
+            else
+                fputc(caracter,archivo2);
+	    }
+	    printf("\nCopia realizada con exito... \n\n");
+    }
+        fclose(archivo1);
+        fclose(archivo2);
+}
+
+int main()
+{
+    char * p1 = "-OEA";
+    char p2 = 34;
+    char *p3 = malloc(sizeof(char)*64);
+    sprintf(p3,"%c",p2);
+    strcat(p1,p3);
+    printf(p1);
+    /*char delim_inic[9];
+    char delim_fin[13];
+    delim_inic[0] = 34;
+    delim_inic[1] = 39;
+    delim_inic[2] = 45;
+    delim_inic[3] = 191;
+    delim_inic[4] = 161;
+    delim_inic[5] = 40;
+    delim_inic[6] = 91;
+    delim_inic[7] = 123;
+    delim_inic[8] = 60;
+    delim_fin[0] = 34;
+    delim_fin[1] = 39;
+    delim_fin[2] = 45;
+    delim_fin[3] = 63;
+    delim_fin[4] = 33;
+    delim_fin[5] = 41;
+    delim_fin[6] = 93;
+    delim_fin[7] = 125;
+    delim_fin[8] = 62;
+    delim_fin[9] = 46;
+    delim_fin[10] = 44;
+    delim_fin[11] = 58;
+    delim_fin[12] = 59;
+    int i,j;
+
+    for(i=0;i>9;i++){
+        for(j=0;j<13;j++){
+            char *p2 = strcat(delim_inic[i],OEA);
+            p2 = strcat(p2,delim_fin[j]);
+            if(strcmp(p2,p1) == 0)
+                printf("coincidencia ctm!!");
+            else
+                printf("chupalo");
+        }
+    }*/
+
+
+	return 0;
+}
