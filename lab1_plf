@@ -1,128 +1,175 @@
 #include <stdio.h>
 #include <stdlib.h>
-
-int main()
-{
-	FILE *archivo1;
-	FILE *archivo2;
-	char caracter;
-
-	archivo1 = fopen("prueba.txt","r");
-	archivo2 = fopen("fichero_salida.txt","w");
-
-	if (archivo1 == NULL)
-		printf("\nError de apertura del archivo. \n\n");
-
-    else{
-	    printf("\nEmpezando copia... \n\n");
-	    while (feof(archivo1) == 0){
-            caracter = fgetc(archivo1);
-            if(caracter == EOF)
-                break;
-            else
-                fputc(caracter,archivo2);
-	    }
-	    printf("\nCopia realizada con exito... \n\n");
-    }
-        fclose(archivo1);
-        fclose(archivo2);
-	return 0;
-}
-
--------------------------------------------------------------------------------------------
-#include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #define OEA "Organización de los Estados Americanos"
-#define OCDE "Organización para la Cooperación y el Desarrollo Económicos"
-#define UNASUR "Unión de Naciones Sudamericanas"
 #define ONU "Organización de las Naciones Unidas"
-#define CEPAL "Comisión Económica para América Latina y el Caribe"
 #define FAO "Organización de las Naciones Unidas para la Alimentación y la Agricultura"
 #define OIM "Organización Internacional para las Migraciones"
 #define OIT "Organización Internacional del Trabajo"
 #define OPS "Organización Panamericana de la Salud"
 #define OMS "Organización Mundial de la Salud"
+#define OCDE "Organización para la Cooperación y el Desarrollo Económicos"
+#define CEPAL "Comisión Económica para América Latina y el Caribe"
 #define UNESCO "Organización de las Naciones Unidas para la Educación, la Ciencia y la Cultura"
+#define UNASUR "Unión de Naciones Sudamericanas"
 #define UNICEF "Fondo de las Naciones Unidas para la infancia"
 
-char * verifica_coind(char *p1){
-
-
-    return p1;
+/*char * concatena(char* palabra){
+    if(strstr(palabra,"\042")!= NULL)
+        return strcat(strcat("\042",verifica_palabras(palabra)),"\042");
+}
+*/
+int verif_delim(char *palabra){ // verifica si los delimitadores son los permitidos al inicio y final de las siglas
+    if(strstr(palabra,"\042")!= NULL || strstr(palabra,"\047")!= NULL || strstr(palabra,"\055")!= NULL) //verifica caso en que los delimitadores son iguales
+        return 1;
+        // ve si el caracter está en la palabra y si está en la palabra y te entrega el simbolo con las letras
+        //entonces está al principio. A diferencia de que si te entrega el simbolo es porque esta al final
+    else if(strchr(palabra,050)!= NULL && strcmp(strchr(palabra,050),"\050")!= 0) // verifica (
+        return 1;
+    else if(strchr(palabra,051)!= NULL && strcmp(strchr(palabra,051),"\051")== 0)// verifica )
+        return 1;
+    else if(strchr(palabra,074)!= NULL && strcmp(strchr(palabra,074),"\074")!= 0) // verifica <
+        return 1;
+    else if(strchr(palabra,076)!= NULL && strcmp(strchr(palabra,076),"\076")== 0) // verifica >
+        return 1;
+    else if(strchr(palabra,133)!= NULL && strcmp(strchr(palabra,133),"\133")!= 0) // verifica [
+        return 1;
+    else if(strchr(palabra,135)!= NULL && strcmp(strchr(palabra,135),"\135")== 0) // verifica ]
+        return 1;
+    else if(strchr(palabra,173)!= NULL && strcmp(strchr(palabra,173),"\173")!= 0) // verifica {
+        return 1;
+    else if(strchr(palabra,175)!= NULL && strcmp(strchr(palabra,175),"\175")== 0) // verifica }
+        return 1;
+    else if(strchr(palabra,056)!= NULL && strcmp(strchr(palabra,056),"\056")== 0) // verifica .
+        return 1;
+    else if(strchr(palabra,054)!= NULL && strcmp(strchr(palabra,054),"\054")== 0) // verifica ,
+        return 1;
+    else if(strchr(palabra,072)!= NULL && strcmp(strchr(palabra,072),"\072")== 0) // verifica :
+        return 1;
+    else if(strchr(palabra,073)!= NULL && strcmp(strchr(palabra,073),"\073")== 0) // verifica ;
+        return 1;
+    else if(strchr(palabra,277)!= NULL && strcmp(strchr(palabra,277),"\277")!= 0) // verifica ¿
+        return 1;
+    else if(strchr(palabra,077)!= NULL && strcmp(strchr(palabra,077),"\077")== 0) // verifica ?
+        return 1;
+    else if(strchr(palabra,241)!= NULL && strcmp(strchr(palabra,241),"\241")!= 0) // verifica ¡
+        return 1;
+    else if(strchr(palabra,041)!= NULL && strcmp(strchr(palabra,041),"\041")== 0) // verifica !
+        return 1;
+    else
+        return 0;
 }
 
-void lee_archivo(){
-    FILE *archivo1;
-	FILE *archivo2;
-	char caracter;
+char *verifica_palabras(char *palabra){ // verifica las siglas y las posibilidades junto a los delimitadores(llamando a la otra funcion)
+    if(strlen(palabra) >= 3 && strlen(palabra)<= 8){
+        if(strcmp(palabra,"OEA")== 0 || (strstr(palabra,"OEA")!= NULL && (strlen(palabra)-strlen("OEA")) == 1 && verif_delim(palabra)== 1) ||
+           (strstr(palabra,"OEA")!= NULL && (strlen(palabra)-strlen("OEA")) == 2 && verif_delim(palabra)== 1 ))
+            return OEA;
+        else if(strcmp(palabra,"ONU")== 0 || (strstr(palabra,"ONU")!=NULL && (strlen(palabra)-strlen("ONU")) == 1 && verif_delim(palabra)== 1) ||
+           (strstr(palabra,"ONU") != NULL && (strlen(palabra)-strlen("ONU")) == 2 && verif_delim(palabra)== 1 ))
+                return ONU;
+        else if(strcmp(palabra,"FAO")== 0 || (strstr(palabra,"FAO")!=NULL && (strlen(palabra)-strlen("FAO")) == 1 && verif_delim(palabra)== 1) ||
+           (strstr(palabra,"FAO") != NULL && (strlen(palabra)-strlen("FAO")) == 2 && verif_delim(palabra)== 1 ))
+                return FAO;
+        else if(strcmp(palabra,"OCDE")== 0 || (strstr(palabra,"OCDE")!=NULL && (strlen(palabra)-strlen("OCDE")) == 1 && verif_delim(palabra)== 1) ||
+           (strstr(palabra,"OCDE") != NULL && (strlen(palabra)-strlen("OCDE")) == 2 && verif_delim(palabra)== 1 ))
+                return OCDE;
+        else if(strcmp(palabra,"UNASUR")== 0 || (strstr(palabra,"UNASUR")!=NULL && (strlen(palabra)-strlen("UNASUR")) == 1 && verif_delim(palabra)== 1) ||
+           (strstr(palabra,"UNASUR") != NULL && (strlen(palabra)-strlen("UNASUR")) == 2 && verif_delim(palabra)== 1 ))
+                return UNASUR;
+        else if(strcmp(palabra,"CEPAL")== 0 || (strstr(palabra,"CEPAL")!=NULL && (strlen(palabra)-strlen("CEPAL")) == 1 && verif_delim(palabra)== 1) ||
+           (strstr(palabra,"CEPAL") != NULL && (strlen(palabra)-strlen("CEPAL")) == 2 && verif_delim(palabra)== 1 ))
+                return CEPAL;
+        else if(strcmp(palabra,"OIM")== 0 || (strstr(palabra,"OIM")!=NULL && (strlen(palabra)-strlen("OIM")) == 1 && verif_delim(palabra)== 1) ||
+           (strstr(palabra,"OIM") != NULL && (strlen(palabra)-strlen("OIM")) == 2 && verif_delim(palabra)== 1 ))
+                return OIM;
+        else if(strcmp(palabra,"OIT")== 0 || (strstr(palabra,"OIT")!=NULL && (strlen(palabra)-strlen("OIT")) == 1 && verif_delim(palabra)== 1) ||
+           (strstr(palabra,"OIT") != NULL && (strlen(palabra)-strlen("OIT")) == 2 && verif_delim(palabra)== 1 ))
+                return OIT;
+        else if(strcmp(palabra,"OPS")== 0 || (strstr(palabra,"OPS")!=NULL && (strlen(palabra)-strlen("OPS")) == 1 && verif_delim(palabra)== 1) ||
+           (strstr(palabra,"OPS") != NULL && (strlen(palabra)-strlen("OPS")) == 2 && verif_delim(palabra)== 1 ))
+                return OPS;
+        else if(strcmp(palabra,"OMS")== 0 || (strstr(palabra,"OMS")!=NULL && (strlen(palabra)-strlen("OMS")) == 1 && verif_delim(palabra)== 1) ||
+           (strstr(palabra,"OMS") != NULL && (strlen(palabra)-strlen("OMS")) == 2 && verif_delim(palabra)== 1 ))
+                return OMS;
+        else if(strcmp(palabra,"UNESCO")== 0 || (strstr(palabra,"UNESCO")!=NULL && (strlen(palabra)-strlen("UNESCO")) == 1 && verif_delim(palabra)== 1) ||
+           (strstr(palabra,"UNESCO") != NULL && (strlen(palabra)-strlen("UNESCO")) == 2 && verif_delim(palabra)== 1 ))
+                return UNESCO;
+        else if(strcmp(palabra,"UNICEF")== 0 || (strstr(palabra,"UNICEF")!=NULL && (strlen(palabra)-strlen("UNICEF")) == 1 && verif_delim(palabra)== 1) ||
+           (strstr(palabra,"UNICEF") != NULL && (strlen(palabra)-strlen("UNICEF")) == 2 && verif_delim(palabra)== 1 ))
+                return UNICEF;
 
-	archivo1 = fopen("prueba.txt","r");
-	archivo2 = fopen("fichero_salida.txt","w");
+        else
+            return palabra;
 
-	if (archivo1 == NULL)
-		printf("\nError de apertura del archivo. \n\n");
-
-    else{
-	    printf("\nEmpezando copia... \n\n");
-	    while (feof(archivo1) == 0){
-            caracter = fgetc(archivo1);
-
-            if(caracter == EOF)
-                break;
-            else
-                fputc(caracter,archivo2);
-	    }
-	    printf("\nCopia realizada con exito... \n\n");
     }
-        fclose(archivo1);
-        fclose(archivo2);
+    else{
+        return palabra;
+    }
 }
 
-int main()
-{
-    char * p1 = "-OEA";
-    char p2 = 34;
-    char *p3 = malloc(sizeof(char)*64);
-    sprintf(p3,"%c",p2);
-    strcat(p1,p3);
-    printf(p1);
-    /*char delim_inic[9];
-    char delim_fin[13];
-    delim_inic[0] = 34;
-    delim_inic[1] = 39;
-    delim_inic[2] = 45;
-    delim_inic[3] = 191;
-    delim_inic[4] = 161;
-    delim_inic[5] = 40;
-    delim_inic[6] = 91;
-    delim_inic[7] = 123;
-    delim_inic[8] = 60;
-    delim_fin[0] = 34;
-    delim_fin[1] = 39;
-    delim_fin[2] = 45;
-    delim_fin[3] = 63;
-    delim_fin[4] = 33;
-    delim_fin[5] = 41;
-    delim_fin[6] = 93;
-    delim_fin[7] = 125;
-    delim_fin[8] = 62;
-    delim_fin[9] = 46;
-    delim_fin[10] = 44;
-    delim_fin[11] = 58;
-    delim_fin[12] = 59;
-    int i,j;
+int validar_fichero(char *fichero){ //verifica si existe el fichero
+    FILE *Fichero;
+    Fichero = fopen(fichero,"r");
+    if(Fichero==NULL)
+        return -1;
+    else
+        return 0;
+}
 
-    for(i=0;i>9;i++){
-        for(j=0;j<13;j++){
-            char *p2 = strcat(delim_inic[i],OEA);
-            p2 = strcat(p2,delim_fin[j]);
-            if(strcmp(p2,p1) == 0)
-                printf("coincidencia ctm!!");
-            else
-                printf("chupalo");
+void lectura_archivo(char * fichero1 , char * fichero2){
+    FILE *Fichero1;
+    FILE *Fichero2;
+    Fichero1 = fopen(fichero1,"r");
+    Fichero2 = fopen(fichero2,"w");
+    char *linea = (char *)malloc(512*sizeof(char));
+    char * aux = (char*)malloc(128*sizeof(char));
+    while(fgets(linea,512,Fichero1)!= NULL){
+
+        aux = strtok(linea," ");
+
+        aux = verifica_palabras(aux);
+
+        fputs(aux,Fichero2);
+
+        while((aux = strtok(NULL," "))!= NULL){
+            aux = verifica_palabras(aux);
+            fputs(" ",Fichero2);
+            aux = verifica_palabras(aux);
+            fputs(aux,Fichero2);
         }
-    }*/
+    }
+
+
+    printf("\nTraduccion realizada con exito...");
+    fclose(Fichero1);
+    fclose(Fichero2);
+
+
+}
+
+int main(int argc, char *argv[])
+{
+    if(argc <3)
+        printf("Error : Faltan parametros en la linea de comandos.\nUSO: oi.exe archivo_entrada archivo_salida");
+    else if(argc >3)
+        printf("Error : Demasiados parametros en la linea de comandos.\nUSO: oi.exe archivo_entrada archivo_salida");
+    else{
+        if(validar_fichero(argv[1])!=0)
+            printf("Error: El archivo de entrada no existe");
+        if else (validar_fichero(argv[2])!=0)
+            printf("Error: El archivo de salida no existe");
+        else{
+            lectura_archivo(argv[1],argv[2]);
+        }
+    }
+    //char *p1 = "OEAfgsd sad";
+    //const char *p2 = "OEA";
+    //int p3 = strlen(p1)-strlen(p2);
+    //int p3 =strcspn(p1,p2);
+    //int p3 = strspn(p1,p2);
+   // printf("%i",p3);
+
 
 
 	return 0;
