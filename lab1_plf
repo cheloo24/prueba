@@ -157,7 +157,7 @@ int main(int argc, char *argv[])
     else{
         if(validar_fichero(argv[1])!=0)
             printf("Error: El archivo de entrada no existe");
-        if else (validar_fichero(argv[2])!=0)
+        else if (validar_fichero(argv[2])!=0)
             printf("Error: El archivo de salida no existe");
         else{
             lectura_archivo(argv[1],argv[2]);
