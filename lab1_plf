@@ -151,9 +151,9 @@ void lectura_archivo(char * fichero1 , char * fichero2){
 int main(int argc, char *argv[])
 {
     if(argc <3)
-        printf("Error : Faltan parametros en la linea de comandos.\nUSO: oi.exe archivo_entrada archivo_salida");
+        printf("Error : Faltan parametros en la linea de comandos.\nUSO: oi.exe archivo_entrada.txt archivo_salida.txt");
     else if(argc >3)
-        printf("Error : Demasiados parametros en la linea de comandos.\nUSO: oi.exe archivo_entrada archivo_salida");
+        printf("Error : Demasiados parametros en la linea de comandos.\nUSO: oi.exe archivo_entrada.txt archivo_salida.txt");
     else{
         if(validar_fichero(argv[1])!=0)
             printf("Error: El archivo de entrada no existe");
